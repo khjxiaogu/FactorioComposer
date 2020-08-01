@@ -56,8 +56,10 @@ public class BluePrint implements FsonSerializable {
 		if(icons[3]!=null)
 			throw new IllegalArgumentException("BluePrints can not have more than 4 icons");
 		for(int i=0;i<4;i++) {
-			if(icons[i]!=null)
+			if(icons[i]==null) {
 				icons[i]=id;
+				break;
+			}
 		}
 	}
 	
