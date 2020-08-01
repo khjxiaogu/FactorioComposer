@@ -13,7 +13,12 @@ Import your midi music to create circuit music blueprint for factorio.
 7. Place a Music Box Driver [blueprint](https://github.com/khjxiaogu/FactorioComposer/blob/master/MusicDriver.md).
 8. Connect as the arrow instructed with green wire.  
 ![instruction](https://res.khjxiaogu.com/piclib/db48c091-958d-4916-83c9-9bb002a9c0c5.jpg)  
-[view picture](https://github.com/khjxiaogu/FactorioComposer/blob/master/instruction.jpg)  
+[view picture via github](https://github.com/khjxiaogu/FactorioComposer/blob/master/instruction.jpg)  
 9. Set Constant combinator with filter __"M" "A" "X" "V"__ 's __"V"__ signal count to music ticks in the blueprint title.  
 10. Turn off Constant combinator with filter __"P" "A" "U" "S" "E"__.  
 11. Enjoy
+# remarks
+- Factorio can only perform notes from F2 to E8, so all notes lower than F2 would be played with drum, and that higher than E8 would be played with triangle.
+- Music ticks is half of game ticks, most music acts well in 30UPS(half of game 60UPS). The display of Music Box Driver is in unit second.  
+- Game UPS would greatly affect the playback rate.
+- __Passage information not supported!__ You should use [Aria Maestosa](https://github.com/ariamaestosa/ariamaestosa) to import the midi file and export to remove such information or the synchronization of different track may break.  
