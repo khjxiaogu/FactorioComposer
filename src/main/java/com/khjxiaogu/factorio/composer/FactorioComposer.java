@@ -1,14 +1,16 @@
 package com.khjxiaogu.factorio.composer;
 
-import java.awt.Dimension;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -18,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -50,61 +51,71 @@ public class FactorioComposer {
 	public static void main(String[] args) throws Exception {
 		JFrame f = new JFrame("Factorio Composer by khjxiaogu");
 		f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.Y_AXIS));
-		f.setSize(400, 400);
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.setResizable(false);
-		JButton button1 = new JButton("Select Folder");
-		JButton button2 = new JButton("Select File");
-
+		JButton button1 = new JButton("Compose folder to blueprint book");
+		JButton button2 = new JButton("Compose file to blueprint");
 		button1.addActionListener(ev -> {
 			try {
-				ImageEncrypt.encrypt();
-			} catch (IOException | NoSuchAlgorithmException e) {
+				exportBPB();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
 		button2.addActionListener(ev -> {
 			try {
-				ImageEncrypt.decrypt();
-			} catch (IOException | NoSuchAlgorithmException e) {
+				exportBP();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
 		JPanel p = new JPanel();
 		JPanel p2 = new JPanel();
-		JPanel text = new JPanel();
+		JLabel p3=new JLabel();
+		p3.setText("made by khjxiaogu");
+		JLabel p4= new JLabel();
+		p4.setText("<html><a href=\"\">View code via github</html>");
+		p4.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		p4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://github.com/khjxiaogu/FactorioComposer"));
+                } catch (Exception ex) {
+                    //It looks like there's a problem
+                }
+            }
+        });
 		p.add(button1);
 		p.add(button2);
-		p2.add(new JLabel(Messages.getString("ImageEncrypt.password"))); //$NON-NLS-1$
-		p2.add(ImageEncrypt.je);
-		p2.setSize(400, p2.getWidth());
 		f.add(p);
 		f.add(p2);
-		ImageEncrypt.l.setMaximumSize(new Dimension(Integer.MAX_VALUE, ImageEncrypt.l.getMinimumSize().height));
-		f.add(ImageEncrypt.l);
-		f.add(Box.createVerticalGlue());
-		text.add(new JLabel(Messages.getString("ImageEncrypt.hint"))); //$NON-NLS-1$
-		text.add(new JLabel(Messages.getString("ImageEncrypt.warn"))); //$NON-NLS-1$
-		text.add(new JLabel(Messages.getString("ImageEncrypt.author"))); //$NON-NLS-1$
-		text.add(new JLabel("Copyright (C) 2020 khjxiaogu,all rights reserved.")); //$NON-NLS-1$
-		text.setMaximumSize(new Dimension(Integer.MAX_VALUE, text.getMaximumSize().height));
-		text.setMinimumSize(new Dimension(text.getMinimumSize().width, text.getMaximumSize().height));
-		f.add(text);
+		f.add(p3);
+		f.add(p4);
+		f.pack();
 		f.setVisible(true);
-		
-		File input=choose();
+	}
+	public static void exportBPB() throws InvalidMidiDataException, IOException {
 		BluePrintBook bp=new BluePrintBook();
-		File inputFolder=input.getParentFile();
-		File[] fs=inputFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mid")||name.toLowerCase().endsWith(".midi"));
+		File inputFolder=chooseFolder();
+		if(inputFolder==null)return;
+		File[] fs=inputFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mid")||name.toLowerCase().endsWith(".midi")||name.toLowerCase().endsWith(".smr"));
 		for(File f:fs) {
 			bp.addBluePrint(makeBluePrint(f));
 		}
-		System.out.println(bp.size());
 		JTextArea area = new JTextArea(10, 40);
 		JScrollPane pane = new JScrollPane();
 		area.setText(Utils.EncodeFson(bp));
+		JOptionPane.showOptionDialog(null,pane, "Copy Blueprint code", JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null);
+	}
+	public static void exportBP() throws InvalidMidiDataException, IOException {
+		File input=choose();
+		if(input==null)return;
+		JTextArea area = new JTextArea(10, 40);
+		JScrollPane pane = new JScrollPane();
+		area.setText(Utils.EncodeFson(makeBluePrint(input)));
 		JOptionPane.showOptionDialog(null,pane, "Copy Blueprint code", JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null);
 	}
 	public static BluePrint makeBluePrint(File input) throws InvalidMidiDataException, IOException {
@@ -395,11 +406,20 @@ public class FactorioComposer {
 	public static File choose() {
 		JFileChooser jfc = new JFileChooser(new File("./"));
 		jfc.setDialogTitle("Select midi file");
-		FileNameExtensionFilter restrict = new FileNameExtensionFilter("midi file","mid", "midi");
+		FileNameExtensionFilter restrict = new FileNameExtensionFilter("midi file","mid", "midi","smr");
 		jfc.setAcceptAllFileFilterUsed(false);
 		jfc.addChoosableFileFilter(restrict);
 		if (jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
 			return null;
 		return jfc.getSelectedFile();
+	}
+	public static File chooseFolder() {
+		JFileChooser jfc = new JFileChooser(); 
+		jfc.setDialogTitle("Select midi folder");
+		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		jfc.setAcceptAllFileFilterUsed(false);
+	    if (jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) 
+	    	return null;
+	    return jfc.getSelectedFile();
 	}
 }
