@@ -40,7 +40,7 @@ import com.khjxiaogu.factorio.objects.items.BluePrint;
 import com.khjxiaogu.factorio.objects.items.BluePrintBook;
 
 public class FactorioComposer {
-	
+	static JFrame f;
 	public static SignalID[] sids=new SignalID[] 
 			{SignalID.V_0,SignalID.V_1,SignalID.V_2,SignalID.V_3,SignalID.V_4,SignalID.V_5,
 			 SignalID.V_6,SignalID.V_7,SignalID.V_8,SignalID.V_9,SignalID.V_A,SignalID.V_B,
@@ -49,7 +49,7 @@ public class FactorioComposer {
 			 SignalID.V_O,SignalID.V_P,SignalID.V_Q,SignalID.V_R,SignalID.V_S,SignalID.V_BLUE,
 			 SignalID.V_U,SignalID.V_V,SignalID.V_W,SignalID.V_X,SignalID.V_Y,SignalID.V_Z};
 	public static void main(String[] args) throws Exception {
-		JFrame f = new JFrame(Messages.getString("FactorioComposer.title")); //$NON-NLS-1$
+		f = new JFrame(Messages.getString("FactorioComposer.title")); //$NON-NLS-1$
 		f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.Y_AXIS));
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.setResizable(false);
@@ -106,17 +106,18 @@ public class FactorioComposer {
 			bp.addBluePrint(makeBluePrint(f));
 		}
 		JTextArea area = new JTextArea(10, 40);
-		JScrollPane pane = new JScrollPane();
+		JScrollPane pane = new JScrollPane(area);
 		area.setText(Utils.EncodeFson(bp));
-		JOptionPane.showOptionDialog(null,pane, Messages.getString("FactorioComposer.copy_bp"), JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null); //$NON-NLS-1$
+		JOptionPane.showOptionDialog(f,pane, Messages.getString("FactorioComposer.copy_bp"), JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null); //$NON-NLS-1$
 	}
 	public static void exportBP() throws InvalidMidiDataException, IOException {
 		File input=choose();
 		if(input==null)return;
 		JTextArea area = new JTextArea(10, 40);
-		JScrollPane pane = new JScrollPane();
-		area.setText(Utils.EncodeFson(makeBluePrint(input)));
-		JOptionPane.showOptionDialog(null,pane, Messages.getString("FactorioComposer.copy_bp"), JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null); //$NON-NLS-1$
+		JScrollPane pane = new JScrollPane(area);
+		String st=Utils.EncodeFson(makeBluePrint(input));
+		area.setText(st);
+		JOptionPane.showOptionDialog(f,pane, Messages.getString("FactorioComposer.copy_bp"), JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null); //$NON-NLS-1$
 	}
 	public static BluePrint makeBluePrint(File input) throws InvalidMidiDataException, IOException {
 		MidiSheet ms=new MidiSheet(input,0,1);
