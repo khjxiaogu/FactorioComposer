@@ -13,7 +13,7 @@ Import your midi music to create circuit music blueprint for factorio.
 7. Place a Music Box Driver [blueprint](https://github.com/khjxiaogu/FactorioComposer/blob/master/MusicDriver.md).
 8. Connect as the arrow instructed with green wire.  
 ![instruction](https://res.khjxiaogu.com/piclib/db48c091-958d-4916-83c9-9bb002a9c0c5.jpg)  
-[view picture](https://github.com/khjxiaogu/FactorioComposer/blob/master/instruction.jpg)  
+[view picture via github](https://github.com/khjxiaogu/FactorioComposer/blob/master/instruction.jpg)  
 9. Set Constant combinator with filter __"M" "A" "X" "V"__ 's __"V"__ signal count to music ticks in the blueprint title.  
 10. Turn off Constant combinator with filter __"P" "A" "U" "S" "E"__.  
 11. Enjoy
