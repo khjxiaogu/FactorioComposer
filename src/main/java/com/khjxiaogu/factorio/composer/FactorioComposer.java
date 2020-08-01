@@ -49,12 +49,12 @@ public class FactorioComposer {
 			 SignalID.V_O,SignalID.V_P,SignalID.V_Q,SignalID.V_R,SignalID.V_S,SignalID.V_BLUE,
 			 SignalID.V_U,SignalID.V_V,SignalID.V_W,SignalID.V_X,SignalID.V_Y,SignalID.V_Z};
 	public static void main(String[] args) throws Exception {
-		JFrame f = new JFrame("Factorio Composer by khjxiaogu");
+		JFrame f = new JFrame(Messages.getString("FactorioComposer.title")); //$NON-NLS-1$
 		f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.Y_AXIS));
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.setResizable(false);
-		JButton button1 = new JButton("Compose folder to blueprint book");
-		JButton button2 = new JButton("Compose file to blueprint");
+		JButton button1 = new JButton(Messages.getString("FactorioComposer.fromfolder")); //$NON-NLS-1$
+		JButton button2 = new JButton(Messages.getString("FactorioComposer.fromfile")); //$NON-NLS-1$
 		button1.addActionListener(ev -> {
 			try {
 				exportBPB();
@@ -74,15 +74,15 @@ public class FactorioComposer {
 		JPanel p = new JPanel();
 		JPanel p2 = new JPanel();
 		JLabel p3=new JLabel();
-		p3.setText("made by khjxiaogu");
+		p3.setText(Messages.getString("FactorioComposer.author")); //$NON-NLS-1$
 		JLabel p4= new JLabel();
-		p4.setText("<html><a href=\"\">View code via github</html>");
+		p4.setText(Messages.getString("FactorioComposer.viewgithub")); //$NON-NLS-1$
 		p4.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		p4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(new URI("https://github.com/khjxiaogu/FactorioComposer"));
+                    Desktop.getDesktop().browse(new URI("https://github.com/khjxiaogu/FactorioComposer")); //$NON-NLS-1$
                 } catch (Exception ex) {
                     //It looks like there's a problem
                 }
@@ -101,14 +101,14 @@ public class FactorioComposer {
 		BluePrintBook bp=new BluePrintBook();
 		File inputFolder=chooseFolder();
 		if(inputFolder==null)return;
-		File[] fs=inputFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mid")||name.toLowerCase().endsWith(".midi")||name.toLowerCase().endsWith(".smr"));
+		File[] fs=inputFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mid")||name.toLowerCase().endsWith(".midi")||name.toLowerCase().endsWith(".smr")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		for(File f:fs) {
 			bp.addBluePrint(makeBluePrint(f));
 		}
 		JTextArea area = new JTextArea(10, 40);
 		JScrollPane pane = new JScrollPane();
 		area.setText(Utils.EncodeFson(bp));
-		JOptionPane.showOptionDialog(null,pane, "Copy Blueprint code", JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null);
+		JOptionPane.showOptionDialog(null,pane, Messages.getString("FactorioComposer.copy_bp"), JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null); //$NON-NLS-1$
 	}
 	public static void exportBP() throws InvalidMidiDataException, IOException {
 		File input=choose();
@@ -116,7 +116,7 @@ public class FactorioComposer {
 		JTextArea area = new JTextArea(10, 40);
 		JScrollPane pane = new JScrollPane();
 		area.setText(Utils.EncodeFson(makeBluePrint(input)));
-		JOptionPane.showOptionDialog(null,pane, "Copy Blueprint code", JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null);
+		JOptionPane.showOptionDialog(null,pane, Messages.getString("FactorioComposer.copy_bp"), JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null); //$NON-NLS-1$
 	}
 	public static BluePrint makeBluePrint(File input) throws InvalidMidiDataException, IOException {
 		MidiSheet ms=new MidiSheet(input,0,1);
@@ -127,7 +127,7 @@ public class FactorioComposer {
 		bp.addIcon(SignalID.V_D);
 		toCircuit(ms,bp);
 		ms.Combine();
-		bp.setName(input.getName().substring(0,input.getName().lastIndexOf('.'))+" - "+(ms.tracks.get(0).getNote(ms.tracks.get(0).getSize()-1).ticks+20)+"tick");
+		bp.setName(input.getName().substring(0,input.getName().lastIndexOf('.'))+" - "+(ms.tracks.get(0).getNote(ms.tracks.get(0).getSize()-1).ticks+20)+Messages.getString("FactorioComposer.tick")); //$NON-NLS-1$ //$NON-NLS-2$
 		return bp;
 	}
 	public static void toCircuit(MidiSheet ms,BluePrint bp) {
@@ -183,20 +183,20 @@ public class FactorioComposer {
 			sp.setVolume(0.4F);
 			sp.setGlobally(true);
 			sp.setPolyphony(true);
-			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">"));
+			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 			if(addLights) {
 				DeciderCombinator lc=new DeciderCombinator(cx,-2.5F);
 				bp.addEntity(lc);
 				lc.setOutput(SignalID.V_L);
 				lc.setCopycount(false);
 				lc.setDirection(0);
-				lc.setCond(new CircuitCondition(SignalID.V_ANY,0,">"));
+				lc.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 				lc.connect(1,sp,1, true);
 				lc.connect(1,sp,1, false);
 				Light lit=new Light(cx,-5F);
 				bp.addEntity(lit);
 				lit.setUseColor(true);
-				lit.setCond(new CircuitCondition(SignalID.V_L,0,">"));
+				lit.setCond(new CircuitCondition(SignalID.V_L,0,">")); //$NON-NLS-1$
 				lit.connect(1,lc,2,true);
 				lit.connect(1,clr,1,false);
 				last=lit;
@@ -232,20 +232,20 @@ public class FactorioComposer {
 			sp.setVolume(0.8F);
 			sp.setGlobally(true);
 			sp.setPolyphony(true);
-			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">"));
+			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 			if(addLights) {
 				DeciderCombinator lc=new DeciderCombinator(cx,-2.5F);
 				bp.addEntity(lc);
 				lc.setOutput(SignalID.V_L);
 				lc.setCopycount(false);
 				lc.setDirection(0);
-				lc.setCond(new CircuitCondition(SignalID.V_ANY,0,">"));
+				lc.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 				lc.connect(1,sp,1, true);
 				lc.connect(1,sp,1, false);
 				Light lit=new Light(cx,-5F);
 				bp.addEntity(lit);
 				lit.setUseColor(true);
-				lit.setCond(new CircuitCondition(SignalID.V_L,0,">"));
+				lit.setCond(new CircuitCondition(SignalID.V_L,0,">")); //$NON-NLS-1$
 				lit.connect(1,lc,2,true);
 				if(last!=null)
 					last.connect(1,lit,1,false);
@@ -268,20 +268,20 @@ public class FactorioComposer {
 			sp.setVolume(0.7F);
 			sp.setGlobally(true);
 			sp.setPolyphony(true);
-			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">"));
+			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 			if(addLights) {
 				DeciderCombinator lc=new DeciderCombinator(cx,-2.5F);
 				bp.addEntity(lc);
 				lc.setOutput(SignalID.V_L);
 				lc.setCopycount(false);
 				lc.setDirection(0);
-				lc.setCond(new CircuitCondition(SignalID.V_ANY,0,">"));
+				lc.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 				lc.connect(1,sp,1, true);
 				lc.connect(1,sp,1, false);
 				Light lit=new Light(cx,-5F);
 				bp.addEntity(lit);
 				lit.setUseColor(true);
-				lit.setCond(new CircuitCondition(SignalID.V_L,0,">"));
+				lit.setCond(new CircuitCondition(SignalID.V_L,0,">")); //$NON-NLS-1$
 				lit.connect(1,lc,2,true);
 				if(last!=null)
 					last.connect(1,lit,1,false);
@@ -301,7 +301,7 @@ public class FactorioComposer {
 		DeciderCombinator last=fd;
 		last.setCopycount(true);
 		last.setOutput(SignalID.V_EACH);
-		last.setCond(new CircuitCondition(SignalID.V_EACH,SignalID.V_T,"="));
+		last.setCond(new CircuitCondition(SignalID.V_EACH,SignalID.V_T,"=")); //$NON-NLS-1$
 		for(Integer tick:track) {
 			if(num==sids.length) {
 				DeciderCombinator cd=new DeciderCombinator(cx,cy+0.5F);
@@ -309,7 +309,7 @@ public class FactorioComposer {
 				cy+=2;
 				cd.setCopycount(true);
 				cd.setOutput(SignalID.V_EACH);
-				cd.setCond(new CircuitCondition(SignalID.V_EACH,SignalID.V_T,"="));
+				cd.setCond(new CircuitCondition(SignalID.V_EACH,SignalID.V_T,"=")); //$NON-NLS-1$
 				bp.addEntity(cd);
 				cd.connect(1,last,1,false);
 				cd.connect(2,last,2,true);
@@ -345,7 +345,7 @@ public class FactorioComposer {
 				continue;
 			}
 			if((note.key<41&&Math.abs(lastmin-note.ticks)<5)||(note.key>112&&Math.abs(lastmax-note.ticks)<5)) {
-				System.out.println("repeat illegal notes found");
+				System.out.println("repeat illegal notes found"); //$NON-NLS-1$
 				mainTrack.remove(i);
 				i--;
 				continue;
@@ -360,7 +360,7 @@ public class FactorioComposer {
 			}else if(lsp!=null) {
 				sp.connect(1,lsp,1,true);
 			}
-			sp.setCond(new CircuitCondition(SignalID.V_T,(int)note.ticks+10,"="));
+			sp.setCond(new CircuitCondition(SignalID.V_T,(int)note.ticks+10,"=")); //$NON-NLS-1$
 			sp.setGlobally(true);
 			int nid=note.key-53;
 			if(nid<0) {
@@ -370,7 +370,7 @@ public class FactorioComposer {
 					sp.setInstrumentID(2);
 					sp.setNoteID(1);
 					lastmin=(int) note.ticks;
-					System.out.println("too low,use drum instead");
+					System.out.println("too low,use drum instead"); //$NON-NLS-1$
 				}else {
 					sp.setNoteID(nid);
 					sp.setInstrumentID(4);
@@ -382,7 +382,7 @@ public class FactorioComposer {
 					sp.setInstrumentID(2);
 					sp.setNoteID(16);
 					lastmax=(int) note.ticks;
-					System.out.println("too high,use bell instead");
+					System.out.println("too high,use bell instead"); //$NON-NLS-1$
 				}else {
 					sp.setInstrumentID(8);
 					sp.setNoteID(nid);
@@ -404,9 +404,9 @@ public class FactorioComposer {
 	}
 
 	public static File choose() {
-		JFileChooser jfc = new JFileChooser(new File("./"));
-		jfc.setDialogTitle("Select midi file");
-		FileNameExtensionFilter restrict = new FileNameExtensionFilter("midi file","mid", "midi","smr");
+		JFileChooser jfc = new JFileChooser(new File("./")); //$NON-NLS-1$
+		jfc.setDialogTitle(Messages.getString("FactorioComposer.selectfile")); //$NON-NLS-1$
+		FileNameExtensionFilter restrict = new FileNameExtensionFilter(Messages.getString("FactorioComposer.file"),"mid", "midi","smr"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		jfc.setAcceptAllFileFilterUsed(false);
 		jfc.addChoosableFileFilter(restrict);
 		if (jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
@@ -414,8 +414,8 @@ public class FactorioComposer {
 		return jfc.getSelectedFile();
 	}
 	public static File chooseFolder() {
-		JFileChooser jfc = new JFileChooser(); 
-		jfc.setDialogTitle("Select midi folder");
+		JFileChooser jfc = new JFileChooser(new File("./"));  //$NON-NLS-1$
+		jfc.setDialogTitle(Messages.getString("FactorioComposer.selectfolder")); //$NON-NLS-1$
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		jfc.setAcceptAllFileFilterUsed(false);
 	    if (jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) 
