@@ -1,4 +1,5 @@
 # FactorioComposer
+[Chinese readme](https://github.com/khjxiaogu/FactorioComposer/blob/master/README_CN.md)  
 Midi music blueprint generator for factorio.  
 Import your midi music to create circuit music blueprint for factorio.   
 ![Java CI with Maven](https://github.com/khjxiaogu/FactorioComposer/workflows/Java%20CI%20with%20Maven/badge.svg)  
