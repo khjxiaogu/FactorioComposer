@@ -1,15 +1,25 @@
 package com.khjxiaogu.factorio.composer;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.khjxiaogu.factorio.composer.midi.MidiSheet;
@@ -38,6 +48,52 @@ public class FactorioComposer {
 			 SignalID.V_O,SignalID.V_P,SignalID.V_Q,SignalID.V_R,SignalID.V_S,SignalID.V_BLUE,
 			 SignalID.V_U,SignalID.V_V,SignalID.V_W,SignalID.V_X,SignalID.V_Y,SignalID.V_Z};
 	public static void main(String[] args) throws Exception {
+		JFrame f = new JFrame("Factorio Composer by khjxiaogu");
+		f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.Y_AXIS));
+		f.setSize(400, 400);
+		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		f.setResizable(false);
+		JButton button1 = new JButton("Select Folder");
+		JButton button2 = new JButton("Select File");
+
+		button1.addActionListener(ev -> {
+			try {
+				ImageEncrypt.encrypt();
+			} catch (IOException | NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		button2.addActionListener(ev -> {
+			try {
+				ImageEncrypt.decrypt();
+			} catch (IOException | NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		JPanel p = new JPanel();
+		JPanel p2 = new JPanel();
+		JPanel text = new JPanel();
+		p.add(button1);
+		p.add(button2);
+		p2.add(new JLabel(Messages.getString("ImageEncrypt.password"))); //$NON-NLS-1$
+		p2.add(ImageEncrypt.je);
+		p2.setSize(400, p2.getWidth());
+		f.add(p);
+		f.add(p2);
+		ImageEncrypt.l.setMaximumSize(new Dimension(Integer.MAX_VALUE, ImageEncrypt.l.getMinimumSize().height));
+		f.add(ImageEncrypt.l);
+		f.add(Box.createVerticalGlue());
+		text.add(new JLabel(Messages.getString("ImageEncrypt.hint"))); //$NON-NLS-1$
+		text.add(new JLabel(Messages.getString("ImageEncrypt.warn"))); //$NON-NLS-1$
+		text.add(new JLabel(Messages.getString("ImageEncrypt.author"))); //$NON-NLS-1$
+		text.add(new JLabel("Copyright (C) 2020 khjxiaogu,all rights reserved.")); //$NON-NLS-1$
+		text.setMaximumSize(new Dimension(Integer.MAX_VALUE, text.getMaximumSize().height));
+		text.setMinimumSize(new Dimension(text.getMinimumSize().width, text.getMaximumSize().height));
+		f.add(text);
+		f.setVisible(true);
+		
 		File input=choose();
 		BluePrintBook bp=new BluePrintBook();
 		File inputFolder=input.getParentFile();
