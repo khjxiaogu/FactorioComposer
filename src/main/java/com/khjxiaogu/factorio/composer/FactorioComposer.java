@@ -48,6 +48,7 @@ public class FactorioComposer {
 			 SignalID.V_I,SignalID.V_J,SignalID.V_K,SignalID.V_L,SignalID.V_M,SignalID.V_N,
 			 SignalID.V_O,SignalID.V_P,SignalID.V_Q,SignalID.V_R,SignalID.V_S,SignalID.V_BLUE,
 			 SignalID.V_U,SignalID.V_V,SignalID.V_W,SignalID.V_X,SignalID.V_Y,SignalID.V_Z};
+	final static float volorg=0.4f;
 	public static void main(String[] args) throws Exception {
 		f = new JFrame(Messages.getString("FactorioComposer.title")); //$NON-NLS-1$
 		f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.Y_AXIS));
@@ -181,7 +182,7 @@ public class FactorioComposer {
 			out1.connect(2,sp,1,true);
 			sp.setInstrumentID(2);
 			sp.setNoteID(1);
-			sp.setVolume(0.4F);
+			sp.setVolume(volorg-0.3F);
 			sp.setGlobally(true);
 			sp.setPolyphony(true);
 			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
@@ -230,7 +231,7 @@ public class FactorioComposer {
 				sp.setNoteID(nid);
 			}else
 				sp.setNoteID(nid);
-			sp.setVolume(0.8F);
+			sp.setVolume(volorg+0.1f);
 			sp.setGlobally(true);
 			sp.setPolyphony(true);
 			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
@@ -266,7 +267,7 @@ public class FactorioComposer {
 			out.connect(2,sp,1,true);
 			sp.setInstrumentID(2);
 			sp.setNoteID(16);
-			sp.setVolume(0.7F);
+			sp.setVolume(volorg);
 			sp.setGlobally(true);
 			sp.setPolyphony(true);
 			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$

@@ -21,4 +21,3 @@ Import your midi music to create circuit music blueprint for factorio.
 - Factorio can only perform notes from F2 to E8, so all notes lower than F2 would be played with drum, and that higher than E8 would be played with triangle.
 - Music ticks is half of game ticks, most music acts well in 30UPS(half of game 60UPS). The display of Music Box Driver is in unit second.  
 - Game UPS would greatly affect the playback rate.
-- __Passage information not supported!__ You should use [Aria Maestosa](https://github.com/ariamaestosa/ariamaestosa) to import the midi file and export to remove such information or the synchronization of different track may break.  
