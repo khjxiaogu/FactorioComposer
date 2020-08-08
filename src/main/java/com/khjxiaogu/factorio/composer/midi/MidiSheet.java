@@ -22,10 +22,32 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Class MidiSheet.
+ *
+ * @author khjxiaogu
+ * file: MidiSheet.java
+ * time: 2020年8月9日
+ */
 public class MidiSheet {
+	
+	/** The tracks.<br> 成员 tracks. */
 	public List<NoteTrack> tracks = new ArrayList<>();
+	
+	/** Constant MsPerGameTick.<br> 常量 MsPerGameTick. */
 	public final static int MsPerGameTick=32;
 	
+	/**
+	 * Instantiates a new MidiSheet.<br>
+	 * 新建一个MidiSheet类<br>
+	 *
+	 * @param f the f<br>
+	 * @param offset the offset<br>
+	 * @param speed the speed<br>
+	 * @throws InvalidMidiDataException if an invalid midi data exception occurred.<br>如果invalid midi data exception发生了
+	 * @throws IOException Signals that an I/O exception has occurred.<br>发生IO错误
+	 */
 	public MidiSheet(File f, int offset, float speed) throws InvalidMidiDataException, IOException {
 		Sequence sequence;
 		sequence = MidiSystem.getSequence(f);
@@ -81,6 +103,12 @@ public class MidiSheet {
 			}
 		}
 	}
+	
+	/**
+	 * Info.<br>
+	 *
+	 * @return return info <br>返回 string
+	 */
 	public String info() {
 		StringBuilder infobuilder=new StringBuilder("midi info:").append("\n");
 		int i=1;
@@ -89,6 +117,12 @@ public class MidiSheet {
 		}
 		return infobuilder.toString();
 	}
+	
+	/**
+	 * Split.<br>
+	 *
+	 * @return true, if <br>如果，返回true。
+	 */
 	public boolean Split() {
 		Map<Integer,NoteTrack> splited=new HashMap<>();
 		for(NoteTrack t:tracks) {
@@ -106,6 +140,12 @@ public class MidiSheet {
 		tracks.addAll(splited.values());
 		return true;
 	}
+	
+	/**
+	 * Split all.<br>
+	 *
+	 * @return return split all <br>返回 map
+	 */
 	public Map<Integer,Set<Integer>> SplitAll() {
 		Map<Integer,Set<Integer>> splited=new TreeMap<>();
 		for(NoteTrack t:tracks) {
@@ -121,6 +161,12 @@ public class MidiSheet {
 		}
 		return splited;
 	}
+	
+	/**
+	 * Combine.<br>
+	 *
+	 * @return true, if <br>如果，返回true。
+	 */
 	public boolean Combine() {
 		if(tracks.size()==1)
 			return false;
