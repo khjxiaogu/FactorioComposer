@@ -160,8 +160,8 @@ public enum SignalID implements FsonSerializable {
 	/** The item-programmable-speaker.*/
 	I_PS(SignalType.I,"programmable-speaker"),
 	;
-	private SignalType type;
-	private String name;
+	private final SignalType type;
+	private final String name;
 	
 	/**
 	 * Enum SignalType.

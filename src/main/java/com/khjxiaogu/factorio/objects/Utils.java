@@ -1,6 +1,7 @@
 package com.khjxiaogu.factorio.objects;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.zip.Deflater;
 
@@ -24,7 +25,7 @@ public final class Utils {
 	public static String EncodeFson(FsonSerializable fs) {
 		String org=fs.Serialize().toString();
 		Deflater df=new Deflater();
-		byte[] raw=org.getBytes();
+		byte[] raw=org.getBytes(StandardCharsets.UTF_8);
 		df.setInput(raw);
 		df.finish();
 		byte[] out=new byte[1024];

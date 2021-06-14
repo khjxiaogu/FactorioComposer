@@ -19,7 +19,7 @@ import com.khjxiaogu.factorio.objects.SignalID;
  * time: 2020年8月1日
  */
 public class ConstantCombinator extends BaseEntity {
-	private class ControlBehavior implements FsonSerializable {
+	private static class ControlBehavior implements FsonSerializable {
 		ArrayList<Signal> filters=new ArrayList<>();
 		public ControlBehavior() {
 		}

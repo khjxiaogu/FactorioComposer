@@ -67,6 +67,7 @@ public class Position implements FsonSerializable,Cloneable {
 		this.x=x;
 		this.y=y;
 	}
+	@Override
 	public JsonElement Serialize() {
 		JsonObject jo=new JsonObject();
 		jo.addProperty("x", x);

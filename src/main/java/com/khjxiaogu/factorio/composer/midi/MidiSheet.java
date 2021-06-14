@@ -82,6 +82,7 @@ public class MidiSheet {
 							lastTick=event.getTick();
 							lastOffset+=Math.round(delta * millisPerMidiTick / MsPerGameTick);
 							currentTrack.add(sm.getData1() + offset * 12,lastOffset, sm.getData2());
+							System.out.println(lastOffset);
 						}
 					} else if (message instanceof MetaMessage) {
 						MetaMessage metaMessage = (MetaMessage) message;
@@ -100,7 +101,9 @@ public class MidiSheet {
 							}
 						}
 					}
+					
 				}
+				
 			}
 			if (currentTrack.getSize() != 0) {
 				tracks.add(currentTrack);
