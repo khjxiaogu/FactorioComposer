@@ -50,9 +50,10 @@ public class Signal implements FsonSerializable {
 
 	@Override
 	public JsonElement Serialize() {
-		JsonObject jo=new JsonObject();
-		jo.add("signal", id.Serialize());
+		JsonObject jo=id.Serialize().getAsJsonObject();
 		jo.addProperty("count", count);
+		jo.addProperty("quality", "normal");
+		jo.addProperty("comparator", "=");
 		return jo;
 	}
 

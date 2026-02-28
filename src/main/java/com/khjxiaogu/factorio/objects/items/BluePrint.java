@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.khjxiaogu.factorio.objects.BaseEntity;
 import com.khjxiaogu.factorio.objects.Entity;
 import com.khjxiaogu.factorio.objects.FsonSerializable;
 import com.khjxiaogu.factorio.objects.Position;
@@ -36,10 +37,37 @@ import com.khjxiaogu.factorio.objects.SignalID;
  * time: 2020年8月1日
  */
 public class BluePrint implements FsonSerializable {
+	private static class WireConnection implements FsonSerializable {
+		private float x1;
+		private float y1;
+		private float x2;
+		private float y2;
+		public WireConnection(float x1, float y1, float x2, float y2) {
+			super();
+			this.x1 = x1;
+			this.y1 = y1;
+			this.x2 = x2;
+			this.y2 = y2;
+		}
+		@Override
+		public JsonElement Serialize() {
+			JsonArray ja=new JsonArray();
+			ja.add(x1);
+			ja.add(y1);
+			ja.add(x2);
+			ja.add(y2);
+			return ja;
+		}
+		
+	}
 	private SignalID[] icons=new SignalID[4];
 	private ArrayList<Entity> entities=new ArrayList<>();
+	private ArrayList<WireConnection> wire=new ArrayList<>();
 	private String name=null;
-	
+	public void connectWire(Entity e1,Entity e2) {
+		wire.add(new WireConnection(e1.getEntityID(),5,e2.getEntityID(),5));
+	}
+
 	/**
 	 * Gets the blueprint name.<br>
 	 *
@@ -111,7 +139,7 @@ public class BluePrint implements FsonSerializable {
 		JsonObject objthis=new JsonObject();
 		main.add("blueprint",objthis);
 		objthis.addProperty("item", "blueprint");
-		objthis.addProperty("version", 77311508481L);
+		objthis.addProperty("version", 562949958205441L);
 		JsonArray icon=new JsonArray();
 		objthis.add("icons", icon);
 		for(int i=0;i<4;i++) {
@@ -126,6 +154,13 @@ public class BluePrint implements FsonSerializable {
 		for(int i=0;i<entities.size();i++) {
 			entity.add(entities.get(i).Serialize());
 		}
+		JsonArray wires=new JsonArray();
+		objthis.add("wires", wires);
+		for(int i=0;i<wire.size();i++) {
+			wires.add(wire.get(i).Serialize());
+		}
+		
+		
 		if(name!=null)
 			objthis.addProperty("label",name);
 		return main;

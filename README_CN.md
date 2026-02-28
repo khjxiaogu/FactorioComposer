@@ -12,9 +12,8 @@
 8. 用绿线安装箭头指示接上。  
 ![instruction](https://res.khjxiaogu.com/piclib/db48c091-958d-4916-83c9-9bb002a9c0c5.jpg)  
 [在github看图](https://github.com/khjxiaogu/FactorioComposer/blob/master/instruction.jpg)  
-9. 设置输出信号为 __"M" "A" "X" "V"__ 的常量箱子的 __"V"__ 信号数值为蓝图标题上面的ticks。  
-10. 关闭输出信号为 __"P" "A" "U" "S" "E"__的常量箱子。  
-11. 享受~~  
+9. 关闭输出信号为 __"P" "A" "U" "S" "E"__的常量箱子。  
+10. 享受~~  
 # 注意事项
 - 异星工厂只能播放从F2到E8的音符, 低于F2的音符会用鼓来演奏, 高于E8的音符会用三角铁演奏。
 - 音乐tick是游戏tick的一半，大多数音乐在30UPS（是游戏60UPS的一半）的情况下有比较好的性能。音乐盒驱动器的显示值单位为秒。  

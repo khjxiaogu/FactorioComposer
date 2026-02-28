@@ -55,8 +55,10 @@ public class Light extends BaseEntity {
 	@Override
 	protected JsonElement Serialize(JsonObject basic) {
 		JsonObject co=new JsonObject();
-		if(cond!=null)
+		if(cond!=null) {
 			co.add("circuit_condition",cond.Serialize());
+			co.addProperty("circuit_enabled", true);
+		}
 		co.addProperty("use_colors",useColor);
 		basic.add("control_behavior", co);
 		return basic;

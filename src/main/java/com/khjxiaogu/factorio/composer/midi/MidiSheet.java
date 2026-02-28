@@ -203,4 +203,11 @@ public class MidiSheet {
 		tracks.add(Combined);
 		return true;
 	}
+	public long getTotalTicks() {
+		long value=0;
+		for(NoteTrack track:tracks) {
+			value=Math.max(track.getNote(track.getSize()-1).ticks, value);
+		}
+		return value;
+	}
 }

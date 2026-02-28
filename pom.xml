@@ -8,7 +8,12 @@
 	<name>Factorio Composer</name>
 	<description>Music importer for Factorio</description>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
+				<resources>
+     <resource>
+       <directory>resource</directory>
+     </resource>
+   </resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

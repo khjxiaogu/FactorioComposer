@@ -20,6 +20,7 @@ package com.khjxiaogu.factorio.objects.entities;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.khjxiaogu.factorio.objects.BaseEntity;
+import com.khjxiaogu.factorio.objects.SignalID;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -35,11 +36,14 @@ public class Speaker extends BaseEntity {
 	private int instrumentID=3;
 	private int noteID=0;
 	private float volume=0.8F;
-	private boolean globally=false;
 	private boolean polyphony=true;
 	private boolean showAlert=false;
 	private boolean showMap=true;
+	private boolean stopPlayingSounds=false;
+	private SignalID volumeControlSignal;
 	private String message="";
+	private String mode;
+	private boolean volumeControlBySignal;
 	
 	/**
 	 * Checks if signal is pitch.<br>
@@ -113,22 +117,30 @@ public class Speaker extends BaseEntity {
 		this.volume = volume;
 	}
 
-	/**
-	 * Checks if is globally.<br>
-	 *
-	 * @return if is globally,true.
-	 */
-	public boolean isGlobally() {
-		return globally;
-	}
 
 	/**
 	 * set globally.<br>
 	 *
 	 * @param globally value to set globally to.
 	 */
-	public void setGlobally(boolean globally) {
-		this.globally = globally;
+	public void setGlobally() {
+		this.mode = "global";
+	}
+	/**
+	 * set globally.<br>
+	 *
+	 * @param globally value to set globally to.
+	 */
+	public void setSurface() {
+		this.mode = "surface";
+	}
+	/**
+	 * set globally.<br>
+	 *
+	 * @param globally value to set globally to.
+	 */
+	public void setLocal() {
+		this.mode = "local";
 	}
 
 	/**
@@ -230,6 +242,34 @@ public class Speaker extends BaseEntity {
 		return 1;
 	}
 
+	public boolean isStopPlayingSounds() {
+		return stopPlayingSounds;
+	}
+
+	public void setStopPlayingSounds(boolean stopPlayingSounds) {
+		this.stopPlayingSounds = stopPlayingSounds;
+	}
+
+	public SignalID getVolumeControlSignal() {
+		return volumeControlSignal;
+	}
+
+	public void setVolumeControlSignal(SignalID volumeControlSignal) {
+		this.volumeControlSignal = volumeControlSignal;
+	}
+
+	public boolean isVolumeControlBySignal() {
+		return volumeControlBySignal;
+	}
+
+	public void setVolumeControlBySignal(boolean volumeControlBySignal) {
+		this.volumeControlBySignal = volumeControlBySignal;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
 	@Override
 	protected JsonElement Serialize(JsonObject basic) {
 		JsonObject cb=new JsonObject();
@@ -238,13 +278,18 @@ public class Speaker extends BaseEntity {
 		JsonObject cparam=new JsonObject();
 		cparam.addProperty("signal_value_is_pitch",is_pitch);
 		cparam.addProperty("instrument_id",instrumentID);
+		cparam.addProperty("stop_playing_sounds",stopPlayingSounds);
+		
 		cparam.addProperty("note_id",noteID);
 		cb.add("circuit_parameters", cparam);
 		basic.add("control_behavior", cb);
 		JsonObject params=new JsonObject();
 		params.addProperty("playback_volume", volume);
-		params.addProperty("playback_globally",globally);
+		params.addProperty("playback_mode",mode);
 		params.addProperty("allow_polyphony",polyphony);
+		params.addProperty("volume_controlled_by_signal", volumeControlBySignal);
+		if(volumeControlSignal!=null)
+			params.add("volume_signal_id", volumeControlSignal.Serialize());
 		basic.add("parameters", params);
 		JsonObject aparam=new JsonObject();
 		aparam.addProperty("show_alert", showAlert);

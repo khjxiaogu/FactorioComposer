@@ -45,12 +45,14 @@ import com.khjxiaogu.factorio.composer.midi.NoteInfo;
 import com.khjxiaogu.factorio.composer.midi.NoteTrack;
 import com.khjxiaogu.factorio.objects.BaseEntity;
 import com.khjxiaogu.factorio.objects.Entity;
+import com.khjxiaogu.factorio.objects.Position;
 import com.khjxiaogu.factorio.objects.SignalID;
 import com.khjxiaogu.factorio.objects.Utils;
 import com.khjxiaogu.factorio.objects.entities.CircuitCondition;
 import com.khjxiaogu.factorio.objects.entities.ConstantCombinator;
 import com.khjxiaogu.factorio.objects.entities.DeciderCombinator;
 import com.khjxiaogu.factorio.objects.entities.Light;
+import com.khjxiaogu.factorio.objects.entities.MediumPole;
 import com.khjxiaogu.factorio.objects.entities.Speaker;
 import com.khjxiaogu.factorio.objects.entities.WoodenPole;
 import com.khjxiaogu.factorio.objects.items.BluePrint;
@@ -64,9 +66,32 @@ public class FactorioComposer {
 			 SignalID.V_C,SignalID.V_D,SignalID.V_E,SignalID.V_F,SignalID.V_G,SignalID.V_H,
 			 SignalID.V_I,SignalID.V_J,SignalID.V_K,SignalID.V_L,SignalID.V_M,SignalID.V_N,
 			 SignalID.V_O,SignalID.V_P,SignalID.V_Q,SignalID.V_R,SignalID.V_S,SignalID.V_BLUE,
-			 SignalID.V_U,SignalID.V_V,SignalID.V_W,SignalID.V_X,SignalID.V_Y,SignalID.V_Z};
+			 SignalID.V_U,SignalID.V_V,SignalID.V_W,SignalID.V_X,SignalID.V_Y,SignalID.V_Z,
+			 SignalID.V_CHECK, SignalID.V_DENY, SignalID.V_NO_ENTRY, SignalID.V_HEART, SignalID.V_ALERT,
+			 SignalID.V_STAR, SignalID.V_INFO, SignalID.V_DOT, SignalID.V_COMMA, SignalID.V_LETTER_DOT,
+			 SignalID.V_EXCLAMATION_MARK, SignalID.V_QUESTION_MARK, SignalID.V_COLON, SignalID.V_SLASH, SignalID.V_APOSTROPHE,
+			 SignalID.V_QUOTATION_MARK, SignalID.V_AMPERSAND, SignalID.V_CIRCUMFLEX_ACCENT, SignalID.V_NUMBER_SIGN, SignalID.V_PERCENT,
+			 SignalID.V_PLUS, SignalID.V_MINUS, SignalID.V_MULTIPLICATION, SignalID.V_DIVISION, SignalID.V_EQUAL,
+			 SignalID.V_NOT_EQUAL, SignalID.V_LESS_THAN, SignalID.V_GREATER_THAN, SignalID.V_LESS_THAN_OR_EQUAL_TO, SignalID.V_GREATER_THAN_OR_EQUAL_TO,
+			 SignalID.V_LEFT_PARENTHESIS, SignalID.V_RIGHT_PARENTHESIS, SignalID.V_LEFT_SQUARE_BRACKET, SignalID.V_RIGHT_SQUARE_BRACKET, SignalID.V_SHAPE_VERTICAL,
+			 SignalID.V_SHAPE_HORIZONTAL, SignalID.V_SHAPE_DIAGONAL, SignalID.V_SHAPE_DIAGONAL_2, SignalID.V_SHAPE_CURVE, SignalID.V_SHAPE_CURVE_2,
+			 SignalID.V_SHAPE_CURVE_3, SignalID.V_SHAPE_CURVE_4, SignalID.V_SHAPE_CROSS, SignalID.V_SHAPE_DIAGONAL_CROSS, SignalID.V_SHAPE_CORNER,
+			 SignalID.V_SHAPE_CORNER_2, SignalID.V_SHAPE_CORNER_3, SignalID.V_SHAPE_CORNER_4, SignalID.V_SHAPE_T, SignalID.V_SHAPE_T_2,
+			 SignalID.V_SHAPE_T_3, SignalID.V_SHAPE_T_4, SignalID.V_SHAPE_CIRCLE, SignalID.V_UP_ARROW, SignalID.V_UP_RIGHT_ARROW,
+			 SignalID.V_RIGHT_ARROW, SignalID.V_DOWN_RIGHT_ARROW, SignalID.V_DOWN_ARROW, SignalID.V_DOWN_LEFT_ARROW, SignalID.V_LEFT_ARROW,
+			 SignalID.V_UP_LEFT_ARROW, SignalID.V_RIGHTWARDS_LEFTWARDS_ARROW, SignalID.V_UPWARDS_DOWNWARDS_ARROW, SignalID.V_SHUFFLE, SignalID.V_LEFT_RIGHT_ARROW,
+			 SignalID.V_UP_DOWN_ARROW, SignalID.V_CLOCKWISE_CIRCLE_ARROW, SignalID.V_ANTICLOCKWISE_CIRCLE_ARROW, SignalID.V_INPUT, SignalID.V_OUTPUT,
+			 SignalID.V_ITEM_PARAMETER, SignalID.V_FUEL_PARAMETER, SignalID.V_FLUID_PARAMETER, SignalID.V_PARAMETER, SignalID.V_FUEL,
+			 SignalID.V_LIGHTNING, SignalID.V_BATTERY_FULL, SignalID.V_BATTERY_MID_LEVEL, SignalID.V_BATTERY_LOW, SignalID.V_RADIOACTIVITY,
+			 SignalID.V_THERMOMETER_BLUE, SignalID.V_THERMOMETER_RED, SignalID.V_FIRE, SignalID.V_EXPLOSION, SignalID.V_SNOWFLAKE,
+			 SignalID.V_LIQUID, SignalID.V_STACK_SIZE, SignalID.V_RECYCLE, SignalID.V_TRASH_BIN, SignalID.V_SCIENCE_PACK,
+			 SignalID.V_MAP_MARKER, SignalID.V_WHITE_FLAG, SignalID.V_LOCK, SignalID.V_UNLOCK, SignalID.V_MINING,
+			 SignalID.V_CLOCK, SignalID.V_HOURGLASS, SignalID.V_ALARM, SignalID.V_SUN, SignalID.V_MOON,
+			 SignalID.V_SPEED, SignalID.V_SKULL, SignalID.V_DAMAGE, SignalID.V_WEAPON, SignalID.V_GHOST
+			};
 	final static float volorg=0.4f;
 	public static void main(String[] args) throws Exception {
+		
 		f = new JFrame(Messages.getString("FactorioComposer.title")); //$NON-NLS-1$
 		f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.Y_AXIS));
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -146,7 +171,7 @@ public class FactorioComposer {
 		bp.addIcon(SignalID.V_D);
 		toCircuit(ms,bp);
 		ms.Combine();
-		bp.setName(input.getName().substring(0,input.getName().lastIndexOf('.'))+" - "+(ms.tracks.get(0).getNote(ms.tracks.get(0).getSize()-1).ticks+20)+Messages.getString("FactorioComposer.tick")); //$NON-NLS-1$ //$NON-NLS-2$
+		bp.setName(input.getName().substring(0,input.getName().lastIndexOf('.'))+" - "+(ms.getTotalTicks()+20)+Messages.getString("FactorioComposer.tick")); //$NON-NLS-1$ //$NON-NLS-2$
 		return bp;
 	}
 	public static void toCircuit(MidiSheet ms,BluePrint bp) {
@@ -174,9 +199,16 @@ public class FactorioComposer {
 			clr.addFilter(SignalID.V_T,-20000000);
 		}
 		ConstantCombinator remp=new ConstantCombinator(-1,-1);
+		Entity lastpole=null;
 		remp.addFilter(SignalID.V_T,-20000000);
 		bp.addEntity(remp);
+		ConstantCombinator cc=new ConstantCombinator(-2,1);
+		cc.addFilter(SignalID.V_V, (int)ms.getTotalTicks()+20);
+		bp.addEntity(cc);
+		lastout=cc;
 		Speaker lsp=null;
+		int maxX=0;
+		int maxY=0;
 		if(Lower.size()>0) {
 			Set<Integer> Lower1=new TreeSet<>();
 			Set<Integer> Lower2=new TreeSet<>();
@@ -187,8 +219,16 @@ public class FactorioComposer {
 				else
 					Lower2.add(val);
 			}
-			BaseEntity out1=makeTrack(bp,cx,Lower2);
-			BaseEntity out2=makeTrack(bp,cx-1,Lower1);
+			
+			
+			TrackInfo tout1=makeTrack(bp,cx,Lower2);
+			TrackInfo tout2=makeTrack(bp,cx-1,Lower1);
+			maxY=Math.max(tout1.cy, maxY);
+			maxY=Math.max(tout2.cy, maxY);
+			BaseEntity out1=tout1.combinator;
+			BaseEntity out2=tout2.combinator;
+			if(lastout!=null)
+				lastout.connect(1, out2, 1, false);
 			out2.connect(2,out1,2, true);
 			out2.connect(1,out1,1,false);
 			lastout=out1;
@@ -200,7 +240,7 @@ public class FactorioComposer {
 			sp.setInstrumentID(2);
 			sp.setNoteID(1);
 			sp.setVolume(volorg-0.3F);
-			sp.setGlobally(true);
+			sp.setSurface();
 			sp.setPolyphony(true);
 			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 			if(addLights) {
@@ -223,7 +263,17 @@ public class FactorioComposer {
 		}
 		for(Map.Entry<Integer,Set<Integer>> ent:tracks.entrySet()) {
 			if(ent.getKey()<41||ent.getKey()>112)continue;
-			BaseEntity out=makeTrack(bp,++cx,ent.getValue());
+			TrackInfo tout=makeTrack(bp,++cx,ent.getValue());
+			maxY=Math.max(tout.cy, maxY);
+			BaseEntity out=tout.combinator;
+			if((cx+2)%7==3) {
+				MediumPole pole=new MediumPole(cx,-4f);
+				bp.addEntity(pole);
+				if(lastpole!=null)
+					bp.connectWire(lastpole, pole);
+				lastpole=pole;
+			}
+			maxX=cx;
 			if(lastout!=null) {
 				out.connect(1,lastout,1,false);
 			}
@@ -249,7 +299,7 @@ public class FactorioComposer {
 			}else
 				sp.setNoteID(nid);
 			sp.setVolume(volorg+0.1f);
-			sp.setGlobally(true);
+			sp.setSurface();
 			sp.setPolyphony(true);
 			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 			if(addLights) {
@@ -274,7 +324,9 @@ public class FactorioComposer {
 			}
 		}
 		if(Higher.size()>0) {
-			BaseEntity out=makeTrack(bp,cx,Higher);
+			TrackInfo tout=makeTrack(bp,cx,Higher);
+			maxY=Math.max(tout.cy, maxY);
+			BaseEntity out=tout.combinator;
 			if(lastout!=null) {
 				out.connect(1,lastout,1,false);
 			}
@@ -285,7 +337,7 @@ public class FactorioComposer {
 			sp.setInstrumentID(2);
 			sp.setNoteID(16);
 			sp.setVolume(volorg);
-			sp.setGlobally(true);
+			sp.setSurface();
 			sp.setPolyphony(true);
 			sp.setCond(new CircuitCondition(SignalID.V_ANY,0,">")); //$NON-NLS-1$
 			if(addLights) {
@@ -309,8 +361,29 @@ public class FactorioComposer {
 				last=lit;
 			}
 		}
+		for(int dx=0;dx<maxX;dx++) {
+			for(int dy=0;dy<maxY;dy++) {
+				if((dx+2)%7==3&&(dy)%7==3) {
+					MediumPole pole=new MediumPole(dx,dy);
+					bp.addEntity(pole);
+					lastpole=bp.getEntityAt(dx, dy-7);
+					if(lastpole!=null)
+						bp.connectWire(pole, lastpole);
+				}
+				
+			}
+		}
 	}
-	private static BaseEntity makeTrack(BluePrint bp,int cx,Set<Integer> track) {
+	private static class TrackInfo{
+		int cy;
+		BaseEntity combinator;
+		public TrackInfo(int cy, BaseEntity combinator) {
+			super();
+			this.cy = cy;
+			this.combinator = combinator;
+		}
+	}
+	private static TrackInfo makeTrack(BluePrint bp,int cx,Set<Integer> track) {
 		DeciderCombinator fd=new DeciderCombinator(cx,0.5F);
 		fd.setDirection(0);
 		bp.addEntity(fd);
@@ -321,6 +394,9 @@ public class FactorioComposer {
 		last.setCopycount(true);
 		last.setOutput(SignalID.V_EACH);
 		last.setCond(new CircuitCondition(SignalID.V_EACH,SignalID.V_T,"=")); //$NON-NLS-1$
+		
+		
+		boolean isPowered=false;
 		for(Integer tick:track) {
 			if(num==sids.length) {
 				DeciderCombinator cd=new DeciderCombinator(cx,cy+0.5F);
@@ -334,92 +410,25 @@ public class FactorioComposer {
 				cd.connect(2,last,2,true);
 				num=0;
 				last=cd;
+				current=null;
 			}
-			if(num%18==0) {
+			if(current==null) {
 				current=new ConstantCombinator(cx,cy);
 				bp.addEntity(current);
 				current.connect(1,last,1,true);
 				cy+=1;
+				if(!isPowered) {
+					/*MediumPole pole=new MediumPole(cx,cy);
+					bp.addEntity(pole);*/
+					cy+=1;
+					isPowered=true;
+				}else
+					isPowered=false;
 			}
 			current.addFilter(sids[num],tick+10);
 			num++;
 		}
-		return fd;
-	}
-	public static void toSpeakers(MidiSheet ms,BluePrint bp) {
-		ms.Combine();
-		NoteTrack mainTrack=ms.tracks.get(0);
-		int sqr=(int) Math.sqrt(mainTrack.getSize()*25/24);
-		sqr/=5;
-		sqr*=5;
-		Speaker lsp=null;
-		int lastmax=0;
-		int lastmin=0;
-		for(int i=0;i<mainTrack.getSize();i++) {
-			int cx=i%sqr;
-			int cy=i/sqr;
-			NoteInfo note=mainTrack.getNote(i);
-			if(cx%5-2==0&&cy%5-2==0) {
-				bp.addEntity(new WoodenPole(cx,cy));
-				continue;
-			}
-			if((note.key<41&&Math.abs(lastmin-note.ticks)<5)||(note.key>112&&Math.abs(lastmax-note.ticks)<5)) {
-				System.out.println("repeat illegal notes found"); //$NON-NLS-1$
-				mainTrack.remove(i);
-				i--;
-				continue;
-			}
-			Speaker sp=new Speaker(cx,cy);
-			bp.addEntity(sp);
-			if(i%sqr==0) {
-				Entity ent=bp.getEntityAt(cx, cy-1);
-				if(ent!=null) {
-					sp.connect(1,ent,1,true);
-				}
-			}else if(lsp!=null) {
-				sp.connect(1,lsp,1,true);
-			}
-			sp.setCond(new CircuitCondition(SignalID.V_T,(int)note.ticks+10,"=")); //$NON-NLS-1$
-			sp.setGlobally(true);
-			int nid=note.key-53;
-			if(nid<0) {
-				nid+=12;
-				if(nid<0) {
-					sp.setVolume(0.5F);
-					sp.setInstrumentID(2);
-					sp.setNoteID(1);
-					lastmin=(int) note.ticks;
-					System.out.println("too low,use drum instead"); //$NON-NLS-1$
-				}else {
-					sp.setNoteID(nid);
-					sp.setInstrumentID(4);
-				}
-			}else if(nid>47) {
-				nid-=24;
-				if(nid>35) {
-					sp.setVolume(0.7F);
-					sp.setInstrumentID(2);
-					sp.setNoteID(16);
-					lastmax=(int) note.ticks;
-					System.out.println("too high,use bell instead"); //$NON-NLS-1$
-				}else {
-					sp.setInstrumentID(8);
-					sp.setNoteID(nid);
-				}
-			}else
-				sp.setNoteID(nid);
-			lsp=sp;
-		}
-		if((mainTrack.getSize()/sqr)%5<=2) {
-			int cy=mainTrack.getSize()/sqr/5;
-			cy+=1;
-			cy*=5;
-			cy-=3;
-			for(int i=0;i<sqr/5;i++) {
-				if(bp.getEntityAt(i*5+2, cy)==null)
-					bp.addEntity(new WoodenPole(i*5+2,cy));
-			}
-		}
+		return new TrackInfo(cy,fd);
 	}
 
 	public static File choose() {
